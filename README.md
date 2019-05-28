@@ -13,3 +13,5 @@ tests are using mocha, sinon, and supertest (integration tests)
 to set up sample database, check out DataImportInstructions.txt, will import booksJSON.js
 
 Implements HATEOS with links that help document
+
+- Create config/default.json using sample_default.json to set config vars

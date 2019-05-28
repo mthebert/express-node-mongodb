@@ -1,21 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
 const swaggerUi = require('swagger-ui-express');
+
 const swaggerDocument = require('./swagger.json');
+const CONFIG = require('config');
+
+// CONFIG START
+
+// process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production'
+
+const dbconnect = CONFIG.get('DB');
+const DB = mongoose.connect(dbconnect);
+const port = process.env.PORT || CONFIG.get('PORT');
+
+// CONFIG END
 
 const app = express();
 
-if (process.env.ENV === 'Test') {
-  console.log('THIS IS A TEST');
-  const db = mongoose.connect('mongodb://localhost/bookAPI-test');
-} else {
-  console.log('THIS IS REAL');
-  const db = mongoose.connect('mongodb://localhost/bookAPI');
-}
-
-const port = process.env.PORT || 4000;
 const Book = require('./models/bookModel');
 const bookRouter = require('./routes/bookRouter')(Book);
       
@@ -31,6 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.server = app.listen(port, () => {
+  console.log(`running in: ${process.env.NODE_ENV}`);
   console.log(`running on port: ${port}`);
 });
 

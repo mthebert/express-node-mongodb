@@ -1,0 +1,5 @@
+{
+  "PORT": 4000,
+  "HOST": "0.0.0.0",
+  "DB": "mongodb://localhost/bookAPI"
+}
