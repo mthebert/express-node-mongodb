@@ -12,8 +12,9 @@ const CONFIG = require('config');
 process.env.NODE_ENV = 'production'
 
 const dbconnect = CONFIG.get('DB');
-const DB = mongoose.connect(dbconnect);
+const db = mongoose.connect(dbconnect);
 const port = process.env.PORT || CONFIG.get('PORT');
+const host = CONFIG.get('HOST');
 
 // CONFIG END
 
@@ -33,9 +34,9 @@ app.get('/', (req, res) => {
   res.send('welcome to the API');
 });
 
-app.server = app.listen(port, () => {
+app.server = app.listen(port, host, () => {
   console.log(`running in: ${process.env.NODE_ENV}`);
-  console.log(`running on port: ${port}`);
+  console.log(`running on ${host}:${port}`);
 });
 
 module.exports = app;
