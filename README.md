@@ -14,4 +14,6 @@ to set up sample database, check out DataImportInstructions.txt, will import boo
 
 Implements HATEOS with links that help document
 
+Uses docker to provide deployable container - uses local mongo
+
 - Create config/default.json using sample_default.json to set config vars
