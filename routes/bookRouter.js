@@ -1,5 +1,8 @@
 /* eslint-disable  no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 const express = require('express');
+const cache = require('express-redis-cache')();
+
 const booksController = require('../controllers/booksController');
 
 function routes(Book) {
@@ -8,7 +11,7 @@ function routes(Book) {
   bookRouter
     .route('/books')
     .post(controller.post)
-    .get(controller.get);
+    .get(cache.route(), controller.get);
 
   bookRouter.use('/books/:bookId', (req, res, next) => {
     Book.findById(req.params.bookId, (err, book) => {
@@ -23,11 +26,12 @@ function routes(Book) {
     });
   });
 
-  bookRouter.route('/books/:bookId')
-    .get((req, res) => {
+  bookRouter
+    .route('/books/:bookId')
+    .get(cache.route(), (req, res) => {
       const returnBook = req.book.toJSON();
       returnBook.links = {};
-      const genre = req.book.genre.replace(' ', '%20');
+      const genre = req.book.genre ? req.book.genre.replace(' ', '%20') : '';
       returnBook.links.FilterByThisGenre = `http://${req.headers.host}/api/books/?genre=${genre}`;
       res.json(returnBook);
     })
@@ -48,9 +52,7 @@ function routes(Book) {
     .patch((req, res) => {
       const { book } = req;
 
-      // eslint-disable-next-line no-underscore-dangle
       if (req.body._id) {
-        // eslint-disable-next-line no-underscore-dangle
         delete req.body._id;
       }
       Object.entries(req.body).forEach((item) => {

@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 
-const swaggerDocument = require('./swagger.json');
 const CONFIG = require('config');
+const swaggerDocument = require('./swagger.json');
 
 // CONFIG START
 
 // process.env.NODE_ENV = 'development';
-process.env.NODE_ENV = 'production'
+process.env.NODE_ENV = 'production';
 
 const dbconnect = CONFIG.get('DB');
 const db = mongoose.connect(dbconnect);
@@ -22,7 +22,7 @@ const app = express();
 
 const Book = require('./models/bookModel');
 const bookRouter = require('./routes/bookRouter')(Book);
-      
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
